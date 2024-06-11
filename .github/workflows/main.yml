@@ -18,19 +18,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 14  # Ajusta según sea necesario
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e
 
       - name: Build for Windows
         run: npm run build:windows
+        working-directory: kha-e
+
+      - name: Move Windows artifacts
+        run: mv kha-e/dist/win ../Windows
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-windows
-          path: dist/win
+          path: ../Windows
 
   build-mac:
     runs-on: macos-latest
@@ -42,19 +47,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 14  # Ajusta según sea necesario
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e
 
       - name: Build for macOS
         run: npm run build:mac
+        working-directory: kha-e
+
+      - name: Move macOS artifacts
+        run: mv kha-e/dist/mac ../macOS
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: ../macOS
 
   build-linux:
     runs-on: ubuntu-latest
@@ -66,19 +76,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 14  # Ajusta según sea necesario
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e
 
       - name: Build for Linux
         run: npm run build:linux
+        working-directory: kha-e
+
+      - name: Move Linux artifacts
+        run: mv kha-e/dist/linux ../Linux
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux
+          path: ../Linux
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -92,26 +107,26 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: electron-windows
-          path: dist/win
+          path: ../Windows
 
       - name: Download macOS artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: ../macOS
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux
+          path: ../Linux
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/win/*
-            dist/mac/*
-            dist/linux/*
+            ../Windows/*
+            ../macOS/*
+            ../Linux/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
