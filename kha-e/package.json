@@ -1,0 +1,74 @@
+{
+  "name": "kha-electron",
+  "productName": "Kingdom Hall Attendant",
+  "version": "1.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:windows": "electron-builder -w",
+    "build:mac": "electron-builder -m --x64 --arm64",
+    "build:linux": "electron-builder -l"
+  },
+  "build": {
+    "appId": "com.kha.app",
+    "productName": "Kha",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer.js",
+      "node_modules/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "uninstallDisplayName": "Uninstall Kha",
+      "license": "license.txt",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Kha"
+    },
+    "dmg": {
+      "icon": "build/icon.icns",
+      "background": "build/icon.png",
+      "contents": [
+        {
+          "x": 320,
+          "y": 60
+        },
+        {
+          "x": 320,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.1.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1"
+  }
+}

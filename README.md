@@ -7,6 +7,7 @@ Kingdom Hall Attendant es una aplicación web desarrollada en Python utilizando 
 * Windows: Binarios y ejecutables para sistemas Windows.
 * macOS: Binarios y ejecutables para sistemas macOS.
 * Linux: Binarios y ejecutables para sistemas Linux.
+* kha-e: Código fuente para generar los binarios. 
 
 ### Instrucciones de uso
 1. Descargar el archivo correspondiente a tu sistema operativo.

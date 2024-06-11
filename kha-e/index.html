@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom Hall Attendant</title>
+    <style>
+        /* Reiniciar estilos básicos para asegurar consistencia entre navegadores */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+            color: white;
+            height: 100vh;
+            background: linear-gradient(200.96deg,
+                    #2af7fe -29.09%,
+                    #5bafd0 51.77%,
+                    #3d2c9e 129.35%);
+            font-family: sans-serif;
+            overflow-y: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            /* Coloca los elementos en los extremos */
+            align-items: center;
+            width: 50%;
+            /* Ancho del contenedor reducido */
+            margin: 0 auto;
+            /* Centra el contenedor horizontalmente */
+            position: relative;
+            /* Necesario para el pseudo-elemento */
+        }
+
+        .box-logo {
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo {
+            margin-right: 10px;
+            /* Espacio reducido entre el logo y el texto */
+            cursor: pointer;
+            /* Cambia el cursor al pasar por encima */
+            transition: transform 0.3s ease;
+            /* Transición para transformaciones */
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            /* Aumenta el tamaño del logo al pasar el ratón */
+        }
+
+        .text {
+            text-align: left;
+            /* Alinea el texto a la izquierda */
+            max-width: 60%;
+            /* Anchura máxima del texto reducida */
+            border-left: 3px solid white;
+            padding-left: 20px;
+        }
+
+        .text p {
+            margin: 10px 0;
+            /* Espacio entre los párrafos */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-logo">
+            <a href="https://cadhub.pythonanywhere.com/">
+                <img class="logo" src="assets/logo.png" alt="Logo" />
+            </a>
+        </div>
+        <div class="text">
+            <p>Kingdom Hall Attendant es la herramienta digital imprescindible para los superintendentes de circuito,
+                ancianos y siervos ministeriales de los testigos de Jehová.</p>
+            <p>KHA ha sido cuidadosamente diseñada para simplificar las tareas y responsabilidades de la congregación,
+                permitiendo una gestión eficiente de asignaciones y actividades. Con características intuitivas y
+                funcionales, los usuarios pueden registrar informes de predicación, llevar un historial y recibir
+                recordatorios de asignaciones de manera fácil y rápida.</p>
+            <p>La seguridad y privacidad de la información es una prioridad para nosotros. Con funciones avanzadas de
+                protección de datos, puedes tener la tranquilidad de que la información sensible de los miembros de la
+                congregación está segura y protegida en todo momento.</p>
+            <p>Pulsa en el logo y comienza a disfrutar de la experiencia.</p>
+        </div>
+    </div>
+</body>
+
+</html>
