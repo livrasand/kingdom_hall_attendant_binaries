@@ -1,4 +1,4 @@
-# Kingdom Hall Attendant Binaries
+# Kingdom Hall Attendant Binaries Pre-release 
 ![zoom](https://github.com/livrasand/kingdom_hall_attendant_binaries/assets/104039397/0c9804af-1058-4446-8c4a-4cf1c4bba761)
 
 > ##### Si consideras útil este proyecto, apóyalo haciendo "★ Star" en el [repositorio principal](https://github.com/livrasand/Kingdom-Hall-Attendant).
