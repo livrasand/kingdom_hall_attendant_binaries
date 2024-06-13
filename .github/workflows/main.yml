@@ -34,24 +34,36 @@ jobs:
         with:
           name: electron-windows
           path: ../Windows
-
+          
   build-mac:
     runs-on: macos-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
+
+      - name: Install NVM
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          . ~/.nvm/nvm.sh
+          nvm install 14
+          nvm use 14
+          node -v
+        shell: bash
+
       - name: Install dependencies
         run: npm install
         working-directory: kha-e
+        shell: bash
+
       - name: Build for macOS
         run: npm run build:mac
         working-directory: kha-e
+        shell: bash
+
       - name: Move macOS artifacts
         run: mv kha-e/dist/mac ../macOS
+        shell: bash
+
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
