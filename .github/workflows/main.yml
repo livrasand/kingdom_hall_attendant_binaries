@@ -1,125 +1,117 @@
 name: Build and Release KHA
 
 on:
-  workflow_dispatch:  
   push:
     branches:
       - main
   release:
     types: [published]
 
-permissions:
-  contents: write  
-
 jobs:
   build-windows:
     runs-on: windows-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 14
+
       - name: Install dependencies
         run: npm install
-        working-directory: kha-e
+
       - name: Build for Windows
         run: npm run build:windows
-        working-directory: kha-e
-      - name: Move Windows artifacts
-        run: mv kha-e/dist/win ../Windows
+
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-windows
-          path: ../Windows
-          
+          path: dist/win
+
   build-mac:
     runs-on: macos-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install NVM
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-          . ~/.nvm/nvm.sh
-          nvm install 14
-          nvm use 14
-          node -v
-        shell: bash
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
       - name: Install dependencies
         run: npm install
-        working-directory: kha-e
-        shell: bash
 
       - name: Build for macOS
         run: npm run build:mac
-        working-directory: kha-e
-        shell: bash
-
-      - name: Move macOS artifacts
-        run: mv kha-e/dist/mac ../macOS
-        shell: bash
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-mac
-          path: ../macOS
+          path: dist/mac
 
   build-linux:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 14
+
       - name: Install dependencies
         run: npm install
-        working-directory: kha-e
+
       - name: Build for Linux
         run: npm run build:linux
-        working-directory: kha-e
-      - name: Move Linux artifacts
-        run: mv kha-e/dist/linux ../Linux
+
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-linux
-          path: ../Linux
+          path: dist/linux
 
   release:
     needs: [build-windows, build-mac, build-linux]
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Download Windows artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-windows
-          path: ../Windows
+          path: dist/win
+
       - name: Download macOS artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: ../macOS
+          path: dist/mac
+
       - name: Download Linux artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-linux
-          path: ../Linux
+          path: dist/linux
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ../Windows/*
-            ../macOS/*
-            ../Linux/*
+            dist/win/*
+            dist/mac/*
+            dist/linux/*
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}

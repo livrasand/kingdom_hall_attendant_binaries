@@ -32,12 +32,12 @@ function createWindow() {
   mainWindow.setMenu(null);
   mainWindow.setMenuBarVisibility(false)
 
-  mainWindow.loadFile("index.html");
-  //mainWindow.loadURL("https://cadhub.pythonanywhere.com/");
+  // mainWindow.loadFile("index.html");
+  mainWindow.loadURL("https://www.getkha.org/");
 
   // On macOS, set the application name in the menu bar
   if (process.platform === "darwin") {
-    app.name = "Kha";
+    app.name = "Kingdom Hall Attendant";
   }
 
   mainWindow.on("closed", function () {
