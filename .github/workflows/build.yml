@@ -1,0 +1,41 @@
+name: Build Executables
+
+on:
+  push:
+    branches:
+      - main  # Aquí puedes ajustar la rama en la que quieres que se ejecute el flujo
+  pull_request:
+    branches:
+      - main  # También puedes ajustar la rama aquí
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Puedes cambiar a macos-latest o windows-latest según el sistema operativo que necesites
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Acción para hacer checkout del repositorio
+
+    - name: Change to kha-e directory
+      run: cd kha-e
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Windows binaries
+      run: npm run build:windows
+      if: runner.os == 'Windows'
+
+    - name: Build macOS binaries
+      run: npm run build:mac
+      if: runner.os == 'macOS'
+
+    - name: Build Linux binaries
+      run: npm run build:linux
+      if: runner.os == 'Linux'
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: executables
+        path: kha-e/dist  # Ruta donde se generan los ejecutables
