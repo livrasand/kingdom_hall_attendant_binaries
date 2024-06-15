@@ -31,6 +31,12 @@
         "zip"
       ]
     },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "icon": "build/icon.ico",
+      "publish": ["github"],
+      "sign": false
+    },
     "nsis": {
       "oneClick": false,
       "perMachine": true,
