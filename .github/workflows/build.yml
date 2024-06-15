@@ -49,6 +49,15 @@ jobs:
       - name: Install dependencies for Electron
         run: npm install
 
+      - name: Install Wine
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt update
+          sudo apt install -y wine64 wine32
+
+      - name: Set up Wine
+        uses: fabasoad/setup-wine@v1
+
       - name: Build Electron App for Windows
         run: npm run build:windows
         env:
