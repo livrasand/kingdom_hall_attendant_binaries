@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          path: kha-e  
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -22,15 +24,17 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e  
 
       - name: Build for Windows
         run: npm run build:windows
+        working-directory: kha-e
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-windows
-          path: dist/win
+          path: kha-e/dist/win
 
   build-mac:
     runs-on: macos-latest
@@ -38,6 +42,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          path: kha-e
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -46,15 +52,17 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e
 
       - name: Build for macOS
         run: npm run build:mac
+        working-directory: kha-e
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: kha-e/dist/mac
 
   build-linux:
     runs-on: ubuntu-latest
@@ -62,6 +70,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          path: kha-e
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -70,15 +80,17 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: kha-e
 
       - name: Build for Linux
         run: npm run build:linux
+        working-directory: kha-e
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux
+          path: kha-e/dist/linux
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -87,31 +99,33 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          path: kha-e
 
       - name: Download Windows artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-windows
-          path: dist/win
+          path: kha-e/dist/win
 
       - name: Download macOS artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: kha-e/dist/mac
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux
+          path: kha-e/dist/linux
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/win/*
-            dist/mac/*
-            dist/linux/*
+            kha-e/dist/win/*
+            kha-e/dist/mac/*
+            kha-e/dist/linux/*
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
