@@ -1,41 +1,39 @@
-name: Build Executables
+name: Build Binaries for KHA
 
 on:
   push:
     branches:
-      - main  # Aquí puedes ajustar la rama en la que quieres que se ejecute el flujo
-  pull_request:
-    branches:
-      - main  # También puedes ajustar la rama aquí
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Puedes cambiar a macos-latest o windows-latest según el sistema operativo que necesites
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2  # Acción para hacer checkout del repositorio
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Change to kha-e directory
-      run: cd kha-e
+      - name: Navigate to kha-e directory
+        run: cd kha-e
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install Dependencies
+        run: npm install
+        working-directory: kha-e  # Este parámetro asegura que npm install se ejecute en kha-e
 
-    - name: Build Windows binaries
-      run: npm run build:windows
-      if: runner.os == 'Windows'
+      - name: Build Windows Executable
+        run: npm run build:windows
+        working-directory: kha-e  # Asegura que npm run build:windows se ejecute en kha-e
 
-    - name: Build macOS binaries
-      run: npm run build:mac
-      if: runner.os == 'macOS'
+      - name: Build macOS Executable
+        run: npm run build:mac
+        working-directory: kha-e  # Asegura que npm run build:mac se ejecute en kha-e
 
-    - name: Build Linux binaries
-      run: npm run build:linux
-      if: runner.os == 'Linux'
+      - name: Build Linux Executable
+        run: npm run build:linux
+        working-directory: kha-e  # Asegura que npm run build:linux se ejecute en kha-e
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: executables
-        path: kha-e/dist  # Ruta donde se generan los ejecutables
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: binaries
+          path: kha-e/dist  # Ajusta esto según donde exactamente se generan los ejecutables en kha-e
