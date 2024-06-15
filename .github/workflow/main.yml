@@ -1,0 +1,117 @@
+name: Build and Release KHA
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for Windows
+        run: npm run build:windows
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: electron-windows
+          path: dist/win
+
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for macOS
+        run: npm run build:mac
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: electron-mac
+          path: dist/mac
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for Linux
+        run: npm run build:linux
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: electron-linux
+          path: dist/linux
+
+  release:
+    needs: [build-windows, build-mac, build-linux]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: electron-windows
+          path: dist/win
+
+      - name: Download macOS artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: electron-mac
+          path: dist/mac
+
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: electron-linux
+          path: dist/linux
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/win/*
+            dist/mac/*
+            dist/linux/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
