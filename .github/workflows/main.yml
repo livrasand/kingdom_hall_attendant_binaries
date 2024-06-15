@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'  # Adjust node version as per your project requirements
+          node-version: '20' 
 
       - name: Install dependencies
         run: npm install
@@ -27,7 +27,7 @@ jobs:
         run: npm run build:windows
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-windows
           path: dist/win
@@ -37,12 +37,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'  # Adjust node version as per your project requirements
+          node-version: '20'  
 
       - name: Install dependencies
         run: npm install
@@ -51,7 +51,7 @@ jobs:
         run: npm run build:mac
 
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-mac
           path: dist/mac
@@ -61,12 +61,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'  # Adjust node version as per your project requirements
+          node-version: '20'  
 
       - name: Install dependencies
         run: npm install
@@ -75,7 +75,7 @@ jobs:
         run: npm run build:linux
 
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-linux
           path: dist/linux
@@ -86,22 +86,22 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Download Windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: electron-windows
           path: dist/win
 
       - name: Download macOS artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: electron-mac
           path: dist/mac
 
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: electron-linux
           path: dist/linux
