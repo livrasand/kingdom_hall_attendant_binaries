@@ -2,13 +2,15 @@
   "name": "kha-electron",
   "productName": "Kingdom Hall Attendant",
   "version": "1.1.0",
-  "description": "",
+  "description": "Aplicación para los testigos de Jehová",  
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:windows": "electron-builder -w",
-    "build:mac": "electron-builder -m --x64 --arm64",
-    "build:linux": "electron-builder -l"
+    "build:windows": "export GH_TOKEN=your_personal_access_token && electron-builder -w",
+    "build:mac": "export GH_TOKEN=your_personal_access_token && electron-builder -m --x64 --arm64",
+    "build:linux": "export GH_TOKEN=your_personal_access_token && electron-builder -l"
+}
+
   },
   "build": {
     "appId": "com.kha.app",
@@ -33,9 +35,13 @@
     },
     "mac": {
       "target": ["dmg", "zip"],
-      "icon": "build/icon.ico",
-      "publish": ["github"],
+      "icon": "build/icon.icns",  
+      "publish": null,  
       "sign": false
+    },
+    "linux": {
+      "icon": "build/icon.png",  
+      "target": ["AppImage", "snap"]
     },
     "nsis": {
       "oneClick": false,
