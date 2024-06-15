@@ -23,3 +23,31 @@ Kingdom Hall Attendant es una aplicación web desarrollada en Python utilizando 
 ### Notas
 * Para obtener el código fuente completo y la documentación detallada, visita el [repositorio principal de Kingdom Hall Attendant](https://github.com/livrasand/Kingdom-Hall-Attendant).
 * Si encuentras algún problema o tienes preguntas, abre un issue en este repositorio o en el repositorio principal.
+
+## Ejecutar localmente
+#### Antes de nada, vaya al directorio `kha-e`
+```bash
+cd kha-e
+```
+#### Iniciar aplicación
+```bash
+npm start
+```
+#### Antes de compilar hay que instalar todas las dependencias ejecutando
+```bash
+npm install
+```
+#### Compilar binarios Windows
+```bash
+npm run build:windows
+```
+#### Compilar binarios macOS
+```bash
+npm run build:mac
+```
+#### Compilar binarios Linux
+```bash
+npm run build:linux
+```
+
+#### Estos comandos crearán el ejecutable en la carpeta dist
