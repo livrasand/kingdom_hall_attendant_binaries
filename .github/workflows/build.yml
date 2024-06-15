@@ -1,7 +1,10 @@
-name: Build Binaries for KHA
+name: Electron Windows Build
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -10,30 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Navigate to kha-e directory
-        run: cd kha-e
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-      - name: Install Dependencies
-        run: npm install
-        working-directory: kha-e  # Este parámetro asegura que npm install se ejecute en kha-e
+      - name: Install dependencies
+        run: |
+          npm install
 
-      - name: Build Windows Executable
-        run: npm run build:windows
-        working-directory: kha-e  # Asegura que npm run build:windows se ejecute en kha-e
-
-      - name: Build macOS Executable
-        run: npm run build:mac
-        working-directory: kha-e  # Asegura que npm run build:mac se ejecute en kha-e
-
-      - name: Build Linux Executable
-        run: npm run build:linux
-        working-directory: kha-e  # Asegura que npm run build:linux se ejecute en kha-e
+      - name: Build for Windows
+        run: |
+          npm run build:windows
+        env:
+          WINEPATH: /usr/bin/wine # This sets the Wine path explicitly
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: binaries
-          path: kha-e/dist  # Ajusta esto según donde exactamente se generan los ejecutables en kha-e
+          name: windows-build-artifact
+          path: dist/win-unpacked
