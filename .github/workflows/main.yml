@@ -110,9 +110,30 @@ jobs:
           name: electron-linux
           path: dist/linux
 
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "::set-output name=VERSION::$(jq -r .version < package.json)"
+
+      - name: Create Git tag
+        run: git tag -a v${{ steps.get_version.outputs.VERSION }} -m "Release version ${{ steps.get_version.outputs.VERSION }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Push Git tag
+        run: git push origin v${{ steps.get_version.outputs.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: "v${{ steps.get_version.outputs.VERSION }}"
+          body: |
+            ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
+            
+            Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
+            
           files: |
             dist/win/*
             dist/mac/*
