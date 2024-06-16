@@ -13,7 +13,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4      
+        with:
+          persist-credentials: false
+
+      - name: Set up GitHub credentials
+        run: |
+          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -40,6 +46,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up GitHub credentials
+        run: |
+          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -64,6 +76,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up GitHub credentials
+        run: |
+          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
