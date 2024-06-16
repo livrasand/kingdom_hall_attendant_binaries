@@ -14,17 +14,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up GitHub credentials
-        run: |
-          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
@@ -35,7 +29,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: electron-windows
           path: dist/win-unpacked/*
@@ -46,17 +40,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up GitHub credentials
-        run: |
-          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
@@ -65,7 +53,7 @@ jobs:
         run: npm run build:mac
 
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: electron-mac
           path: dist/mac/*
@@ -76,17 +64,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up GitHub credentials
-        run: |
-          git config --global url.https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
@@ -97,7 +79,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: electron-linux
           path: dist/linux-unpacked/*
@@ -111,19 +93,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Windows artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v2
         with:
           name: electron-windows
           path: dist/win
 
       - name: Download macOS artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v2
         with:
           name: electron-mac
           path: dist/mac
 
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v2
         with:
           name: electron-linux
           path: dist/linux
@@ -137,20 +119,25 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create Git tag
-        run: git tag -a v${{ steps.get_version.outputs.VERSION }} -m "v${{ steps.get_version.outputs.VERSION }}"
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      # Incrementar la versión minor en package.json y crear el tag
+      - name: Bump version and create tag
+        id: bump_version
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ steps.get_version.outputs.VERSION }}
+          level: minor
 
+      # Empujar el tag recién creado
       - name: Push Git tag
-        run: git push origin v${{ steps.get_version.outputs.VERSION }}:refs/tags/v${{ steps.get_version.outputs.VERSION }}
+        run: git push origin ${{ steps.bump_version.outputs.new_version }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      # Crear el release
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
           name: "v${{ steps.get_version.outputs.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
