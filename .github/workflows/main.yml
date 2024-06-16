@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4      
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
@@ -140,12 +140,12 @@ jobs:
       - name: Create Git tag
         run: git tag -a v${{ steps.get_version.outputs.VERSION }} -m "v${{ steps.get_version.outputs.VERSION }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Push Git tag
-        run: git push origin v${{ steps.get_version.outputs.VERSION }}
+        run: git push origin v${{ steps.get_version.outputs.VERSION }}:refs/tags/v${{ steps.get_version.outputs.VERSION }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -162,4 +162,4 @@ jobs:
             dist/mac/*
             dist/linux/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
