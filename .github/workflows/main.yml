@@ -25,8 +25,6 @@ jobs:
 
       - name: Build for Windows
         run: npm run build:windows
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
@@ -75,8 +73,6 @@ jobs:
 
       - name: Build for Linux
         run: npm run build:linux
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
@@ -112,24 +108,20 @@ jobs:
 
       - name: Get the version from package.json
         id: get_version
-        run: echo "::set-output name=VERSION::$(jq -r .version < package.json)"
+        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
 
       - name: Set Git identity
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Incrementar la versión minor en package.json y crear el tag
-      - name: Bump version and create tag
-        id: bump_version
-        uses: actions-ecosystem/action-bump-semver@v1
-        with:
-          current_version: ${{ steps.get_version.outputs.VERSION }}
-          level: minor
+      # Crear y etiquetar el nuevo tag
+      - name: Create tag
+        run: git tag -a "v${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
 
       # Empujar el tag recién creado
       - name: Push Git tag
-        run: git push origin ${{ steps.bump_version.outputs.new_version }}
+        run: git push origin "v${{ env.VERSION }}"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -137,8 +129,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.bump_version.outputs.new_version }}
-          name: "v${{ steps.get_version.outputs.VERSION }}"
+          tag_name: "v${{ env.VERSION }}"
+          name: "v${{ env.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
             
