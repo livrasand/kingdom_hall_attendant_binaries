@@ -25,6 +25,8 @@ jobs:
 
       - name: Build for Windows
         run: npm run build:windows
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
@@ -73,6 +75,8 @@ jobs:
 
       - name: Build for Linux
         run: npm run build:linux
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
@@ -116,12 +120,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       # Crear y etiquetar el nuevo tag
-      - name: Create tag
-        run: git tag -a "v${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
-
-      # Empujar el tag recién creado
-      - name: Push Git tag
-        run: git push origin "v${{ env.VERSION }}"
+      - name: Create and push tag
+        run: |
+          NEW_VERSION="v${{ env.VERSION }}"
+          git tag -a "$NEW_VERSION" -m "Release version $NEW_VERSION"
+          git push origin "$NEW_VERSION"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
