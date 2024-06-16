@@ -114,8 +114,13 @@ jobs:
         id: get_version
         run: echo "::set-output name=VERSION::$(jq -r .version < package.json)"
 
+      - name: Set Git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Create Git tag
-        run: git tag -a v${{ steps.get_version.outputs.VERSION }} -m "Release version ${{ steps.get_version.outputs.VERSION }}"
+        run: git tag -a v${{ steps.get_version.outputs.VERSION }} -m "v${{ steps.get_version.outputs.VERSION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
