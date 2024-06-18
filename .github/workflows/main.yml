@@ -28,16 +28,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Zip Windows artifacts
-        run: |
-          mkdir -p dist/zip
-          powershell Compress-Archive -Path dist/win-unpacked/* -DestinationPath dist/zip/electron-windows.zip
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
+
+      - name: Package for Windows
+        run: npm run dist:win
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: electron-windows
-          path: dist/zip/electron-windows.zip
+          name: kha-windows-${{ env.VERSION }}
+          path: dist/*.exe
 
   build-mac:
     runs-on: macos-latest
@@ -57,16 +61,20 @@ jobs:
       - name: Build for macOS
         run: npm run build:mac
 
-      - name: Zip macOS artifacts
-        run: |
-          mkdir -p dist/zip
-          zip -r dist/zip/electron-mac.zip dist/mac/*
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
+
+      - name: Package for macOS
+        run: npm run dist:mac
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: electron-mac
-          path: dist/zip/electron-mac.zip
+          name: kha-mac-${{ env.VERSION }}
+          path: dist/*.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -88,16 +96,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Zip Linux artifacts
-        run: |
-          mkdir -p dist/zip
-          zip -r dist/zip/electron-linux.zip dist/linux-unpacked/*
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
+
+      - name: Package for Linux
+        run: npm run dist:linux
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: electron-linux
-          path: dist/zip/electron-linux.zip
+          name: kha-linux-${{ env.VERSION }}
+          path: dist/*.AppImage
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -110,24 +122,20 @@ jobs:
       - name: Download Windows artifacts
         uses: actions/download-artifact@v2
         with:
-          name: electron-windows
+          name: kha-windows-${{ env.VERSION }}
           path: dist/win
 
       - name: Download macOS artifacts
         uses: actions/download-artifact@v2
         with:
-          name: electron-mac
+          name: kha-mac-${{ env.VERSION }}
           path: dist/mac
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v2
         with:
-          name: electron-linux
+          name: kha-linux-${{ env.VERSION }}
           path: dist/linux
-
-      - name: Get the version from package.json
-        id: get_version
-        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
 
       - name: Set Git identity
         run: |
@@ -153,8 +161,8 @@ jobs:
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
             
           files: |
-            dist/win/electron-windows.zip
-            dist/mac/electron-mac.zip
-            dist/linux/electron-linux.zip
+            dist/win/*.exe
+            dist/mac/*.dmg
+            dist/linux/*.AppImage
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
