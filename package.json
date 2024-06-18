@@ -12,7 +12,7 @@
   },
   "build": {
     "appId": "com.kha.app",
-    "productName": "KHA",
+    "productName": "kha",
     "directories": {
       "output": "dist"
     },
