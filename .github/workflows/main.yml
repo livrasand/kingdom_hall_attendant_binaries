@@ -28,11 +28,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Zip Windows artifacts
+        run: |
+          mkdir -p dist/zip
+          powershell Compress-Archive -Path dist/win-unpacked/* -DestinationPath dist/zip/electron-windows.zip
+
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-windows
-          path: dist/win-unpacked/*
+          path: dist/zip/electron-windows.zip
 
   build-mac:
     runs-on: macos-latest
@@ -52,11 +57,16 @@ jobs:
       - name: Build for macOS
         run: npm run build:mac
 
+      - name: Zip macOS artifacts
+        run: |
+          mkdir -p dist/zip
+          zip -r dist/zip/electron-mac.zip dist/mac/*
+
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac/*
+          path: dist/zip/electron-mac.zip
 
   build-linux:
     runs-on: ubuntu-latest
@@ -78,11 +88,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Zip Linux artifacts
+        run: |
+          mkdir -p dist/zip
+          zip -r dist/zip/electron-linux.zip dist/linux-unpacked/*
+
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux-unpacked/*
+          path: dist/zip/electron-linux.zip
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -138,8 +153,8 @@ jobs:
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
             
           files: |
-            dist/win/*
-            dist/mac/*
-            dist/linux/*
+            dist/win/electron-windows.zip
+            dist/mac/electron-mac.zip
+            dist/linux/electron-linux.zip
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
