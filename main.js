@@ -33,7 +33,7 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false)
 
   // mainWindow.loadFile("index.html");
-  mainWindow.loadURL("https://www.getkha.org/");
+  mainWindow.loadURL("https://www.getkha.org/login-desktop-client");
 
   // On macOS, set the application name in the menu bar
   if (process.platform === "darwin") {
