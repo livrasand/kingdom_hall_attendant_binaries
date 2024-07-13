@@ -137,7 +137,7 @@ jobs:
         run: ls -la dist
 
       - name: List downloaded files (macOS)
-        run: ls -la dist/mac
+        run: ls -la dist
 
       - name: List downloaded files (Linux)
         run: ls -la dist/linux
