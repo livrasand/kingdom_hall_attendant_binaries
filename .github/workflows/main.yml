@@ -169,7 +169,7 @@ jobs:
 
       - name: Create and push tag
         run: |
-          NEW_VERSION="v${{ steps.get_version.outputs.version }}"
+          NEW_VERSION="v${{ env.VERSION }}"
           git tag -a "$NEW_VERSION" -m "Release version $NEW_VERSION"
           git push origin "$NEW_VERSION"
         env:
@@ -178,14 +178,14 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v${{ needs.get-version.outputs.version }}"
-          name: "v${{ needs.get-version.outputs.version }}"
+          tag_name: "v${{ env.VERSION }}"
+          name: "v${{ env.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            dist/kha Setup ${{ env.VERSION }}.exe
+            kha Setup ${{ env.VERSION }}.exe
             dist/kha-${{ env.VERSION }}-win.zip
             dist/kha-${{ env.VERSION }}-arm64-mac.zip
             dist/kha-${{ env.VERSION }}-arm64.dmg
