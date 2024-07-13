@@ -64,7 +64,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: electron-mac
-          path: dist/installer-mac.dmg
+          path: |
+            dist/kha-1.1.2-arm64-mac.zip
+            dist/kha-1.1.2-arm64.dmg
+            dist/kha-1.1.2-mac.zip
+            dist/kha-1.1.2.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -109,7 +113,7 @@ jobs:
           name: kingdom-hall-attendant-binaries
           path: dist/win
 
-      - name: Download macOS installer
+      - name: Download macOS installers
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
@@ -160,6 +164,10 @@ jobs:
             dist/win/kha Setup 1.1.2.exe
             dist/win/kha Setup 1.1.2.exe.blockmap
             dist/win/kha-1.1.2-win.zip
+            dist/kha-1.1.2-arm64-mac.zip
+            dist/kha-1.1.2-arm64.dmg
+            dist/kha-1.1.2-mac.zip
+            dist/kha-1.1.2.dmg
         env:
 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
