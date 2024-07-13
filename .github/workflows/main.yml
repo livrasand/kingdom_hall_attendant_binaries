@@ -125,9 +125,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List files in dist recursively
-        run: ls -R dist
-
       - name: Get the version from package.json
         id: get_version
         run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
@@ -188,12 +185,12 @@ jobs:
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            kha Setup ${{ env.VERSION }}.exe
-            dist/kha-${{ env.VERSION }}-win.zip
-            dist/kha-${{ env.VERSION }}-arm64-mac.zip
-            dist/kha-${{ env.VERSION }}-arm64.dmg
-            dist/kha-${{ env.VERSION }}-mac.zip
-            dist/kha-${{ env.VERSION }}.dmg
+            dist/dist/kha Setup ${{ env.VERSION }}.exe
+            dist/dist/kha-${{ env.VERSION }}-win.zip
+            dist/dist/kha-${{ env.VERSION }}-arm64-mac.zip
+            dist/dist/kha-${{ env.VERSION }}-arm64.dmg
+            dist/dist/kha-${{ env.VERSION }}-mac.zip
+            dist/dist/kha-${{ env.VERSION }}.dmg
             dist/linux/kha-${{ env.VERSION }}.AppImage
             dist/linux/kha-electron_${{ env.VERSION }}_amd64.snap
         env:
