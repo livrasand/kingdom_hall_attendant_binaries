@@ -36,7 +36,7 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha\ Setup\ 1.1.2.exe
+            dist/kha Setup 1.1.2.exe
             dist/kha-1.1.2-win.zip
 
   build-mac:
@@ -114,7 +114,7 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path:  |
-            dist/kha\ Setup\ 1.1.2.exe
+            dist/kha Setup 1.1.2.exe
             dist/kha-1.1.2-win.zip
 
       - name: Download macOS installers
@@ -134,7 +134,7 @@ jobs:
           path: dist/linux
 
       - name: List downloaded files (Windows)
-        run: ls -la dist/win
+        run: ls -la dist
 
       - name: List downloaded files (macOS)
         run: ls -la dist/mac
