@@ -19,7 +19,7 @@ jobs:
 
       - name: Get the version from package.json
         id: get_version
-        run: echo "version=$(jq -r .version < package.json)" >> $GITHUB_ENV
+        run: echo "::set-output name=version::$(jq -r .version < package.json)"
 
   build-windows:
     runs-on: windows-latest
@@ -50,8 +50,8 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha Setup ${{ env.version }}.exe
-            dist/kha-${{ env.version }}-win.zip
+            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
+            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
 
   build-mac:
     runs-on: macos-latest
@@ -80,10 +80,10 @@ jobs:
         with:
           name: electron-mac
           path: |
-            dist/kha-${{ env.version }}-arm64-mac.zip
-            dist/kha-${{ env.version }}-arm64.dmg
-            dist/kha-${{ env.version }}-mac.zip
-            dist/kha-${{ env.version }}.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -114,8 +114,8 @@ jobs:
         with:
           name: electron-linux
           path: |
-            dist/kha-${{ env.version }}.AppImage
-            dist/kha-electron_${{ env.version }}_amd64.snap
+            dist/kha-${{ needs.get-version.outputs.version }}.AppImage
+            dist/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -130,18 +130,18 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha Setup ${{ env.version }}.exe
-            dist/kha-${{ env.version }}-win.zip
+            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
+            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
 
       - name: Download macOS installers
         uses: actions/download-artifact@v4
         with:
           name: electron-mac
           path: |
-            dist/kha-${{ env.version }}-arm64-mac.zip
-            dist/kha-${{ env.version }}-arm64.dmg
-            dist/kha-${{ env.version }}-mac.zip
-            dist/kha-${{ env.version }}.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}.dmg
 
       - name: Download Linux installer
         uses: actions/download-artifact@v4
@@ -165,7 +165,7 @@ jobs:
 
       - name: Create and push tag
         run: |
-          NEW_VERSION="v${{ env.version }}"
+          NEW_VERSION="v${{ steps.get_version.outputs.version }}"
           git tag -a "$NEW_VERSION" -m "Release version $NEW_VERSION"
           git push origin "$NEW_VERSION"
         env:
@@ -174,20 +174,20 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v${{ env.version }}"
-          name: "v${{ env.version }}"
+          tag_name: "v${{ needs.get-version.outputs.version }}"
+          name: "v${{ needs.get-version.outputs.version }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            dist/kha Setup ${{ env.version }}.exe
-            dist/kha-${{ env.version }}-win.zip
-            dist/kha-${{ env.version }}-arm64-mac.zip
-            dist/kha-${{ env.version }}-arm64.dmg
-            dist/kha-${{ env.version }}-mac.zip
-            dist/kha-${{ env.version }}.dmg
-            dist/linux/kha-${{ env.version }}.AppImage
-            dist/linux/kha-electron_${{ env.version }}_amd64.snap
+            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
+            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
+            dist/kha-${{ needs.get-version.outputs.version }}.dmg
+            dist/linux/kha-${{ needs.get-version.outputs.version }}.AppImage
+            dist/linux/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
