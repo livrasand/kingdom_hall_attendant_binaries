@@ -96,19 +96,19 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: electron-windows
-          path: dist/installer-windows.exe
+          path: dist/win
 
       - name: Download macOS installer
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: dist/installer-mac.dmg
+          path: dist/mac
 
       - name: Download Linux installer
         uses: actions/download-artifact@v2
         with:
           name: electron-linux
-          path: dist/installer-linux.AppImage
+          path: dist/linux
 
       - name: Get the version from package.json
         id: get_version
@@ -138,8 +138,8 @@ jobs:
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
             
           files: |
-            dist/installer-windows.exe
-            dist/installer-mac.dmg
-            dist/installer-linux.AppImage
+            dist/win/installer-windows.exe
+            dist/mac/installer-mac.dmg
+            dist/linux/installer-linux.AppImage
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
