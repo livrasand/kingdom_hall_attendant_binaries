@@ -125,6 +125,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List files in dist recursively
+        run: ls -R dist
+
       - name: Get the version from package.json
         id: get_version
         run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
