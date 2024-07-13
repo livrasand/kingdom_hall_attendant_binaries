@@ -91,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: electron-linux
-          path: dist/installer-linux.AppImage
+          path: kha-1.1.2.AppImage
 
   release:
     needs: [build-windows, build-mac, build-linux]
