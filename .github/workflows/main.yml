@@ -97,7 +97,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: electron-linux
-          path: kha-1.1.2.AppImage
+          path: |
+            dist/kha-1.1.2.AppImage
+            dist/kha-electron_1.1.2_amd64.snap
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -111,13 +113,19 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: kingdom-hall-attendant-binaries
-          path: dist/win
+          path:  |
+            dist/kha\ Setup\ 1.1.2.exe
+            dist/kha-1.1.2-win.zip
 
       - name: Download macOS installers
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: |
+            dist/kha-1.1.2-arm64-mac.zip
+            dist/kha-1.1.2-arm64.dmg
+            dist/kha-1.1.2-mac.zip
+            dist/kha-1.1.2.dmg
 
       - name: Download Linux installer
         uses: actions/download-artifact@v2
