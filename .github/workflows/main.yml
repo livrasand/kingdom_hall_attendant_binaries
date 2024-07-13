@@ -34,8 +34,10 @@ jobs:
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: electron-windows
-          path: dist/installer-windows.exe
+          name: kingdom-hall-attendant-binaries
+          path: |
+            dist/kha\ Setup\ 1.1.2.exe
+            dist/kha-1.1.2-win.zip
 
   build-mac:
     runs-on: macos-latest
@@ -101,10 +103,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download Windows installer
+      - name: Download Windows installer and binaries
         uses: actions/download-artifact@v2
         with:
-          name: electron-windows
+          name: kingdom-hall-attendant-binaries
           path: dist/win
 
       - name: Download macOS installer
@@ -155,8 +157,9 @@ jobs:
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            dist/win/installer-windows.exe
-            dist/mac/installer-mac.dmg
-            dist/linux/installer-linux.AppImage
+            dist/win/kha Setup 1.1.2.exe
+            dist/win/kha Setup 1.1.2.exe.blockmap
+            dist/win/kha-1.1.2-win.zip
         env:
+
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
