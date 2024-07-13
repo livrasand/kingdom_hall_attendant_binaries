@@ -28,8 +28,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: List files in dist directory (Windows)
+        run: ls -la dist
+
       - name: Upload Windows installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-windows
           path: dist/installer-windows.exe
@@ -52,8 +55,11 @@ jobs:
       - name: Build for macOS
         run: npm run build:mac
 
+      - name: List files in dist directory (macOS)
+        run: ls -la dist
+
       - name: Upload macOS installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-mac
           path: dist/installer-mac.dmg
@@ -78,8 +84,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: List files in dist directory (Linux)
+        run: ls -la dist
+
       - name: Upload Linux installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: electron-linux
           path: dist/installer-linux.AppImage
@@ -110,6 +119,15 @@ jobs:
           name: electron-linux
           path: dist/linux
 
+      - name: List downloaded files (Windows)
+        run: ls -la dist/win
+
+      - name: List downloaded files (macOS)
+        run: ls -la dist/mac
+
+      - name: List downloaded files (Linux)
+        run: ls -la dist/linux
+
       - name: Get the version from package.json
         id: get_version
         run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
@@ -136,7 +154,6 @@ jobs:
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
-            
           files: |
             dist/win/installer-windows.exe
             dist/mac/installer-mac.dmg
