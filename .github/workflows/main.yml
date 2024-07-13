@@ -96,19 +96,19 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: electron-windows
-          path: dist/win
+          path: dist/installer-windows.exe
 
       - name: Download macOS installer
         uses: actions/download-artifact@v2
         with:
           name: electron-mac
-          path: dist/mac
+          path: dist/installer-mac.dmg
 
       - name: Download Linux installer
         uses: actions/download-artifact@v2
         with:
           name: electron-linux
-          path: dist/linux
+          path: dist/installer-linux.AppImage
 
       - name: Get the version from package.json
         id: get_version
