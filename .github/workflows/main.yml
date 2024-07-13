@@ -117,6 +117,9 @@ jobs:
             dist/kha-${{ needs.get-version.outputs.version }}.AppImage
             dist/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap
 
+  - name: List files in dist recursively
+    run: ls -R dist
+
   release:
     needs: [build-windows, build-mac, build-linux]
     runs-on: ubuntu-latest
