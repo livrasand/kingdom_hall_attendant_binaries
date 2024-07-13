@@ -125,23 +125,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
+
       - name: Download Windows installer and binaries
         uses: actions/download-artifact@v4
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
-            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
+            dist/kha Setup ${{ env.VERSION }}.exe
+            dist/kha-${{ env.VERSION }}-win.zip
 
       - name: Download macOS installers
         uses: actions/download-artifact@v4
         with:
           name: electron-mac
           path: |
-            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
-            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
-            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
-            dist/kha-${{ needs.get-version.outputs.version }}.dmg
+            dist/kha-${{ env.VERSION }}-arm64-mac.zip
+            dist/kha-${{ env.VERSION }}-arm64.dmg
+            dist/kha-${{ env.VERSION }}-mac.zip
+            dist/kha-${{ env.VERSION }}.dmg
 
       - name: Download Linux installer
         uses: actions/download-artifact@v4
@@ -181,13 +185,13 @@ jobs:
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
-            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
-            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
-            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
-            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
-            dist/kha-${{ needs.get-version.outputs.version }}.dmg
-            dist/linux/kha-${{ needs.get-version.outputs.version }}.AppImage
-            dist/linux/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap
+            dist/kha Setup ${{ env.VERSION }}.exe
+            dist/kha-${{ env.VERSION }}-win.zip
+            dist/kha-${{ env.VERSION }}-arm64-mac.zip
+            dist/kha-${{ env.VERSION }}-arm64.dmg
+            dist/kha-${{ env.VERSION }}-mac.zip
+            dist/kha-${{ env.VERSION }}.dmg
+            dist/linux/kha-${{ env.VERSION }}.AppImage
+            dist/linux/kha-electron_${{ env.VERSION }}_amd64.snap
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
