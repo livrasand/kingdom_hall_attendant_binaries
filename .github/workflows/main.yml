@@ -29,7 +29,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: List files in dist directory (Windows)
-        run: ls -la dist
+        run: Get-ChildItem -Path dist -Recurse
 
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
