@@ -82,7 +82,7 @@ jobs:
         run: ls -la dist
 
       - name: Calculate SHA256 checksums (macOS)
-        run: shasum -a 256 dist/* > checksums-macos.txt
+        run: find dist -type f -exec shasum -a 256 {} \; > checksums-macos.txt
 
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
@@ -120,8 +120,8 @@ jobs:
         run: ls -la dist
 
       - name: Calculate SHA256 checksums (Linux)
-        run: sha256sum dist/* > checksums-linux.txt
-
+        run: find dist -type f -exec sha256sum {} \; > checksums-linux.txt
+        
       - name: Upload Linux installer
         uses: actions/upload-artifact@v4
         with:
