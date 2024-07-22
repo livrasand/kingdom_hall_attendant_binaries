@@ -45,6 +45,10 @@ jobs:
       - name: List files in dist directory (Windows)
         run: Get-ChildItem -Path dist -Recurse
 
+      - name: Calculate SHA256 checksums (Windows)
+        run: |
+          Get-FileHash -Algorithm SHA256 dist\kha\* | Format-Table | Out-File checksums-windows.txt
+
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
@@ -52,6 +56,7 @@ jobs:
           path: |
             dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
             dist/kha-${{ needs.get-version.outputs.version }}-win.zip
+            checksums-windows.txt
       
 
   build-mac:
@@ -76,6 +81,9 @@ jobs:
       - name: List files in dist directory (macOS)
         run: ls -la dist
 
+      - name: Calculate SHA256 checksums (macOS)
+        run: shasum -a 256 dist/* > checksums-macos.txt
+
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
@@ -85,6 +93,7 @@ jobs:
             dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
             dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
             dist/kha-${{ needs.get-version.outputs.version }}.dmg
+            checksums-macos.txt
       
   build-linux:
     runs-on: ubuntu-latest
@@ -110,13 +119,17 @@ jobs:
       - name: List files in dist directory (Linux)
         run: ls -la dist
 
+      - name: Calculate SHA256 checksums (Linux)
+        run: sha256sum dist/* > checksums-linux.txt
+
       - name: Upload Linux installer
         uses: actions/upload-artifact@v4
         with:
           name: electron-linux
           path: |
             dist/kha-${{ needs.get-version.outputs.version }}.AppImage
-            dist/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap  
+            dist/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap
+            checksums-linux.txt
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -135,7 +148,6 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: dist/windows
-      
 
       - name: Download macOS installers
         uses: actions/download-artifact@v4
@@ -148,16 +160,26 @@ jobs:
         with:
           name: electron-linux
           path: dist/linux
-        
+
       - name: List downloaded files (Windows)
         run: ls -la dist/windows
-        
+
       - name: List downloaded files (macOS)
         run: ls -la dist/macos
-      
+
       - name: List downloaded files (Linux)
         run: ls -la dist/linux
-      
+
+      - name: Read SHA256 checksums
+        id: read_checksums
+        run: |
+          echo "Windows checksums:"
+          cat dist/windows/checksums-windows.txt
+          echo "macOS checksums:"
+          cat dist/macos/checksums-macos.txt
+          echo "Linux checksums:"
+          cat dist/linux/checksums-linux.txt
+
       - name: Set Git identity
         run: |
           git config --global user.name "github-actions[bot]"
@@ -178,8 +200,23 @@ jobs:
           name: "v${{ env.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
-              
+            
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
+
+            ### Windows
+            ```plaintext
+            $(cat dist/windows/checksums-windows.txt)
+            ```
+
+            ### macOS
+            ```plaintext
+            $(cat dist/macos/checksums-macos.txt)
+            ```
+
+            ### Linux
+            ```plaintext
+            $(cat dist/linux/checksums-linux.txt)
+            ```
           files: |
             dist/windows/kha Setup ${{ env.VERSION }}.exe
             dist/windows/kha-${{ env.VERSION }}-win.zip
