@@ -1,7 +1,7 @@
 {
   "name": "kingdom-hall-attendant",
   "productName": "Kingdom Hall Attendant",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Una app dedicada solo a las congregaciones",
   "main": "main.js",
   "scripts": {
