@@ -203,17 +203,20 @@ jobs:
             
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
 
-            ### Windows
+            _Los archivos binarios dentro del archivo de distribución sin empaquetar llevan el número de versión: ${{ env.VERSION }}_
+
+            ### Hashes
+            #### Windows
             ```plaintext
             $(cat dist/windows/checksums-windows.txt)
             ```
 
-            ### macOS
+            #### macOS
             ```plaintext
             $(cat dist/macos/checksums-macos.txt)
             ```
 
-            ### Linux
+            #### Linux
             ```plaintext
             $(cat dist/linux/checksums-linux.txt)
             ```
