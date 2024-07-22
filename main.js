@@ -1,10 +1,59 @@
 const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 const { spawn } = require("child_process");
+const { autoUpdater } = require("electron-updater");
+const log = require("electron-log");
+const axios = require("axios");
 
-Menu.setApplicationMenu(false)
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+
+Menu.setApplicationMenu(false);
 
 let mainWindow;
+let wasConnected = false; 
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit(); 
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  app.on('ready', () => {
+    createWindow();
+
+    setInterval(() => {
+      checkInternetConnection().then((isConnected) => {
+        if (isConnected !== wasConnected) { 
+          wasConnected = isConnected;
+          if (isConnected) {
+            mainWindow.loadURL("https://www.getkha.org/login-desktop-client");
+          } else {
+            mainWindow.loadFile(path.join(__dirname, "offline.html"));
+          }
+        }
+      });
+    }, 1000);
+  });
+
+  app.on('window-all-closed', function () {
+    if (process.platform !== "darwin") {
+      app.quit();
+    }
+  });
+
+  app.on('activate', function () {
+    if (mainWindow === null) {
+      createWindow();
+    }
+  });
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,16 +75,19 @@ function createWindow() {
     },
   });
 
-  // Maximize the window
   mainWindow.maximize();
-  // Remove the default menu
   mainWindow.setMenu(null);
-  mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(false);
 
-  // mainWindow.loadFile("index.html");
-  mainWindow.loadURL("https://www.getkha.org/login-desktop-client");
+  checkInternetConnection().then((isConnected) => {
+    wasConnected = isConnected;
+    if (isConnected) {
+      mainWindow.loadURL("https://www.getkha.org/login-desktop-client");
+    } else {
+      mainWindow.loadFile(path.join(__dirname, "offline.html"));
+    }
+  });
 
-  // On macOS, set the application name in the menu bar
   if (process.platform === "darwin") {
     app.name = "Kingdom Hall Attendant";
   }
@@ -43,23 +95,25 @@ function createWindow() {
   mainWindow.on("closed", function () {
     mainWindow = null;
   });
+
+  autoUpdater.checkForUpdatesAndNotify();
 }
 
+function checkInternetConnection() {
+  return axios.get('https://www.google.com')
+    .then(() => true)
+    .catch(() => false);
+}
 
-app.on("ready", () => {
-  createWindow();
-
-  //mainWindow.webContents.openDevTools();
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available.');
 });
 
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('Update downloaded; will install now');
+  autoUpdater.quitAndInstall();
 });
 
-app.on("activate", function () {
-  if (mainWindow === null) {
-    createWindow();
-  }
+autoUpdater.on('error', (error) => {
+  log.error('Error in auto-updater: ', error);
 });

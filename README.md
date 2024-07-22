@@ -9,43 +9,33 @@ Binarios compilados de la aplicación web Kingdom Hall Attendant. Aquí encontra
 
 Kingdom Hall Attendant es una aplicación web desarrollada en Python utilizando el framework Flask, con HTML para la interfaz de usuario y SQLite como base de datos. Este repositorio almacena las versiones precompiladas de la aplicación para facilitar su distribución e instalación en diferentes plataformas.
 
-### Contenido
-* Windows: Binarios y ejecutables para sistemas Windows.
-* macOS: Binarios y ejecutables para sistemas macOS.
-* Linux: Binarios y ejecutables para sistemas Linux.
-* kha-e: Código fuente para generar los binarios. 
-
 ### Instrucciones de uso
-1. Descargar el archivo correspondiente a tu sistema operativo.
-2. Descomprimir el archivo descargado.
-3. Ejecutar el binario para iniciar la aplicación.
+1. Ir a Releases
+2. Descargar el archivo correspondiente a tu sistema operativo.
+3. Ejecutar el binario para iniciar el instalador.
 
 ### Notas
-* Para obtener el código fuente completo y la documentación detallada, visita el [repositorio principal de Kingdom Hall Attendant](https://github.com/livrasand/Kingdom-Hall-Attendant).
+* Para obtener el código fuente completo de la aplicación **Kingdom Hall Attendant** y la documentación detallada, visita el [repositorio principal de Kingdom Hall Attendant](https://github.com/livrasand/Kingdom-Hall-Attendant).
 * Si encuentras algún problema o tienes preguntas, abre un issue en este repositorio o en el repositorio principal.
 
 ## Ejecutar localmente
-#### Antes de nada, vaya al directorio `kha-e`
-```bash
-cd kha-e
-```
-#### Iniciar aplicación
+#### Iniciar la aplicación
 ```bash
 npm start
 ```
-#### Antes de compilar hay que instalar todas las dependencias ejecutando
+#### Instalar las dependencias
 ```bash
 npm install
 ```
-#### Compilar binarios Windows
+#### Compilar binarios para Windows
 ```bash
 npm run build:windows
 ```
-#### Compilar binarios macOS
+#### Compilar binarios para macOS
 ```bash
 npm run build:mac
 ```
-#### Compilar binarios Linux
+#### Compilar binarios para Linux
 ```bash
 npm run build:linux
 ```
