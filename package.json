@@ -89,7 +89,7 @@
     "electron-builder": "^24.13.3"
   },
   "dependencies": {
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "electron-is-dev": "^3.0.1",
     "electron-log": "^5.1.6",
     "electron-updater": "^6.2.1"
