@@ -33,11 +33,7 @@
       "target": [
         "nsis",
         "zip"
-      ],
-      "arch": [
-      "ia32",
-      "x64"
-    ]
+      ]
     },
     "mac": {
       "target": [
