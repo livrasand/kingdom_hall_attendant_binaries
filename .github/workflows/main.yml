@@ -50,11 +50,9 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha-${{ needs.get-version.outputs.version }}-win32.zip
-            dist/kha-${{ needs.get-version.outputs.version }}-win64.zip
-            dist/kha-${{ needs.get-version.outputs.version }}-win32.exe
-            dist/kha-${{ needs.get-version.outputs.version }}-win64.exe
-      
+            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
+            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-ia32-win.zip
 
   build-mac:
     runs-on: macos-latest
