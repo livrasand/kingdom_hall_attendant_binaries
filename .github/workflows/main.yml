@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+          
       - name: Build for Windows
         run: npm run build:windows
         env:
@@ -50,8 +50,10 @@ jobs:
         with:
           name: kingdom-hall-attendant-binaries
           path: |
-            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
-            dist/kha-${{ needs.get-version.outputs.version }}-win.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-win32.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-win64.zip
+            dist/kha-${{ needs.get-version.outputs.version }}-win32.exe
+            dist/kha-${{ needs.get-version.outputs.version }}-win64.exe
       
 
   build-mac:
@@ -181,13 +183,15 @@ jobs:
               
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
           files: |
-            dist/windows/kha Setup ${{ env.VERSION }}.exe
-            dist/windows/kha-${{ env.VERSION }}-win.zip
-            dist/macos/kha-${{ env.VERSION }}-arm64-mac.zip
-            dist/macos/kha-${{ env.VERSION }}-arm64.dmg
-            dist/macos/kha-${{ env.VERSION }}-mac.zip
-            dist/macos/kha-${{ env.VERSION }}.dmg
-            dist/linux/kha-${{ env.VERSION }}.AppImage
-            dist/linux/kha-electron_${{ env.VERSION }}_amd64.snap
+            dist/windows/KHA-${{ env.VERSION }}-Windows-x64.exe
+            dist/windows/KHA-${{ env.VERSION }}-Windows-x86.exe
+            dist/windows/KHA-${{ env.VERSION }}-win32.zip
+            dist/windows/KHA-${{ env.VERSION }}-win64.zip
+            dist/macos/KHA-${{ env.VERSION }}-arm64-mac.zip
+            dist/macos/KHA-${{ env.VERSION }}-macOS-ARM64.dmg
+            dist/macos/KHA-${{ env.VERSION }}-mac.zip
+            dist/macos/KHA-${{ env.VERSION }}-macOS-x86_64.dmg
+            dist/linux/KHA-${{ env.VERSION }}-Linux.AppImage
+            dist/linux/KHA-${{ env.VERSION }}-Linux-AMD64.snap
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
