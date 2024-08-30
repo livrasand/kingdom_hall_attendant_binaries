@@ -1,14 +1,14 @@
 {
   "name": "kingdom-hall-attendant",
   "productName": "Kingdom Hall Attendant",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Una app dedicada solo a las congregaciones",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:windows": "electron-builder -w",
-    "build:mac": "electron-builder -m --x64 --arm64",
-    "build:linux": "electron-builder -l"
+    "build:windows": "electron-builder --win --ia32 --x64",
+    "build:mac": "electron-builder --mac --x64 --arm64",
+    "build:linux": "electron-builder --linux"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,11 @@
       "target": [
         "nsis",
         "zip"
-      ]
+      ],
+      "arch": [
+      "ia32",
+      "x64"
+    ]
     },
     "mac": {
       "target": [
