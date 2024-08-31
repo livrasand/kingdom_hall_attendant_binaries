@@ -178,18 +178,38 @@ jobs:
           name: "v${{ env.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
-              
+
+            _Kingdom Hall Attendant se encuentra actualmente en desarrollo BETA, respaldado por un sin ánimo de lucro. Estamos apuntando a Primavera del 2025 para una primera versión Estable._
+            
             Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
+            
+            Para descargar la versión correspondiente de Kingdom Hall Attendant, selecciona el binario adecuado según tu plataforma:
+            
+            - **Windows x64:** También conocida como `x86_64` o simplemente `64-bit`. Esta es la arquitectura más común en la mayoría de las computadoras modernas. Ofrece mejor rendimiento y soporte para más memoria que las versiones de 32 bits.
+              - `kha Setup ${{ env.VERSION }}.exe`
+              - `kha-${{ env.VERSION }}-win.zip`
+            
+            - **Windows x86:** Esta es la arquitectura tradicional de 32 bits. Es menos común en sistemas modernos, pero aún se utiliza en dispositivos más antiguos o en situaciones específicas.
+              - `kha-${{ env.VERSION }}-ia32-win.zip`
+            
+            - **macOS ARM64:** Introducida en 2020, esta arquitectura se basa en diseños ARM personalizados por Apple, conocidos como la serie **M** (M1, M1 Pro, M1 Max, M2, etc.).
+              - `kha-${{ env.VERSION }}-arm64-mac.zip`
+              - `kha-${{ env.VERSION }}-arm64.dmg`
+            
+            - **macOS Intel x86_64:** Esta arquitectura ha sido la estándar para los dispositivos Mac desde 2006 hasta aproximadamente 2020.
+              - `kha-${{ env.VERSION }}-mac.zip`
+              - `kha-${{ env.VERSION }}.dmg`
+            
+            - **Linux:*
+              - `kha-${{ env.VERSION }}.AppImage`
           files: |
-            dist/windows/KHA-${{ env.VERSION }}-Windows-x64.exe
-            dist/windows/KHA-${{ env.VERSION }}-Windows-x86.exe
-            dist/windows/KHA-${{ env.VERSION }}-win32.zip
-            dist/windows/KHA-${{ env.VERSION }}-win64.zip
-            dist/macos/KHA-${{ env.VERSION }}-arm64-mac.zip
-            dist/macos/KHA-${{ env.VERSION }}-macOS-ARM64.dmg
-            dist/macos/KHA-${{ env.VERSION }}-mac.zip
-            dist/macos/KHA-${{ env.VERSION }}-macOS-x86_64.dmg
-            dist/linux/KHA-${{ env.VERSION }}-Linux.AppImage
-            dist/linux/KHA-${{ env.VERSION }}-Linux-AMD64.snap
+            dist/windows/kha Setup ${{ env.VERSION }}.exe
+            dist/windows/kha-${{ env.VERSION }}-ia32-win.zip
+            dist/windows/kha-${{ env.VERSION }}-win.zip
+            dist/windows/kha-${{ env.VERSION }}-arm64-mac.zip
+            dist/macos/kha-${{ env.VERSION }}-arm64.dmg
+            dist/macos/kha-${{ env.VERSION }}-mac.zip
+            dist/macos/kha-${{ env.VERSION }}.dmg
+            dist/macos/kha-${{ env.VERSION }}.AppImage
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
