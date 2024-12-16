@@ -48,7 +48,7 @@ jobs:
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: kingdom-hall-attendant-binaries
+          name: kha-windows
           path: |
             dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
             dist/kha-${{ needs.get-version.outputs.version }}-win.zip
@@ -80,7 +80,7 @@ jobs:
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
-          name: electron-mac
+          name: kha-mac
           path: |
             dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip
             dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
@@ -118,7 +118,7 @@ jobs:
       - name: Upload Linux installer
         uses: actions/upload-artifact@v4
         with:
-          name: electron-linux
+          name: kha-linux
           path: |
             dist/kha-${{ needs.get-version.outputs.version }}.AppImage
             dist/kingdom-hall-attendant-${{ needs.get-version.outputs.version }}.freebsd
@@ -142,20 +142,20 @@ jobs:
       - name: Download Windows installer and binaries
         uses: actions/download-artifact@v4
         with:
-          name: kingdom-hall-attendant-binaries
+          name: kha-windows
           path: dist/windows
       
 
       - name: Download macOS installers
         uses: actions/download-artifact@v4
         with:
-          name: electron-mac
+          name: kha-mac
           path: dist/macos
 
       - name: Download Linux installer
         uses: actions/download-artifact@v4
         with:
-          name: electron-linux
+          name: kha-linux
           path: dist/linux
         
       - name: List downloaded files (Windows)
@@ -211,15 +211,15 @@ jobs:
               - `kha-${{ env.VERSION }}.AppImage`
             
             - **Hashes:**
-              - Windows x64: `$(sha256sum dist/windows/kha Setup ${{ env.VERSION }}.exe | awk '{ print $1 }')`
-              - macOS ARM64: `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}-arm64.dmg | awk '{ print $1 }')`
-              - Linux: `$(sha256sum dist/linux/kha-${{ env.VERSION }}.AppImage | awk '{ print $1 }')`
-              - Windows x86: `$(sha256sum dist/windows/kha-${{ env.VERSION }}-ia32-win.zip | awk '{ print $1 }')`
-              - macOS Intel: `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}.dmg | awk '{ print $1 }')`
-              - Linux FreeBSD: `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.freebsd | awk '{ print $1 }')`
-              - Linux RPM: `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.x86_64.rpm | awk '{ print $1 }')`
-              - Linux DEB: `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.deb | awk '{ print $1 }')`
-              - Linux Snap: `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.snap | awk '{ print $1 }')`
+              - **Windows x64:** `$(sha256sum dist/windows/kha Setup ${{ env.VERSION }}.exe | awk '{ print $1 }')` - Este comando calcula el hash SHA-256 del instalador para Windows x64, garantizando la integridad del archivo y permitiendo a los auditores verificar que no ha sido alterado.
+              - **macOS ARM64:** `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}-arm64.dmg | awk '{ print $1 }')` - Se utiliza `shasum` para obtener el hash SHA-256 de la imagen de disco para macOS ARM64, asegurando que el archivo es auténtico y no ha sido modificado.
+              - **Linux (AppImage):** `$(sha256sum dist/linux/kha-${{ env.VERSION }}.AppImage | awk '{ print $1 }')` - Este comando genera el hash SHA-256 del archivo AppImage en Linux, permitiendo a los expertos en criptografía verificar su integridad.
+              - **Windows x86:** `$(sha256sum dist/windows/kha-${{ env.VERSION }}-ia32-win.zip | awk '{ print $1 }')` - Se calcula el hash SHA-256 del archivo ZIP para Windows x86, proporcionando una forma de validar que el archivo no ha sido comprometido.
+              - **macOS Intel x86_64:** `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}.dmg | awk '{ print $1 }')` - Este comando obtiene el hash SHA-256 de la imagen de disco para macOS Intel, asegurando la autenticidad del archivo.
+              - **Linux FreeBSD:** `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.freebsd | awk '{ print $1 }')` - Se calcula el hash SHA-256 del archivo específico para FreeBSD, permitiendo la verificación de su integridad.
+              - **Linux RPM:** `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.x86_64.rpm | awk '{ print $1 }')` - Este comando genera el hash SHA-256 del paquete RPM, asegurando que el archivo no ha sido alterado.
+              - **Linux DEB:** `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.deb | awk '{ print $1 }')` - Se calcula el hash SHA-256 del paquete DEB, permitiendo a los auditores verificar su integridad.
+              - **Linux Snap:** `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.snap | awk '{ print $1 }')` - Este comando obtiene el hash SHA-256 del paquete Snap, asegurando que el archivo es auténtico y no ha sido modificado.
           files: |
             dist/windows/kha Setup ${{ env.VERSION }}.exe
             dist/windows/kha Setup ${{ env.VERSION }}.exe.blockmap
