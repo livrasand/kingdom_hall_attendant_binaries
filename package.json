@@ -33,24 +33,25 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+          "arch": ["x64"]
+        },
+        {
+          "target": "nsis",
+          "arch": ["ia32"]
         },
         {
           "target": "zip",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+          "arch": ["x64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["ia32"]
         }
       ]
     },
     "mac": {
       "target": [
         "dmg",
-        "pkg",
         "zip"
       ],
       "icon": "build/icon.icns",
@@ -64,8 +65,7 @@
         "snap",
         "deb",
         "rpm", 
-        "freebsd", 
-        "pacman",
+        "freebsd",
         "zip"
       ]
     },
