@@ -51,7 +51,6 @@
       "target": [
         "dmg",
         "pkg",
-        "mas",
         "zip"
       ],
       "icon": "build/icon.icns",
@@ -66,9 +65,7 @@
         "deb",
         "rpm", 
         "freebsd", 
-        "pacman", 
-        "p5p", 
-        "apk",
+        "pacman",
         "zip"
       ]
     },
