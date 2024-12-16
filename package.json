@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/livrasand/kingdom_hall_attendant_binaries"
+    "url": "https://github.com/livrasand/kingdom_hall_attendant_binaries.git"
   },
   "build": {
     "appId": "com.kha.app",
@@ -48,18 +48,18 @@
       "icon": "build/icon.png",
       "target": [
         "AppImage",
-        "snap"
+        "snap",
+        "zip"
       ]
     },
     "nsis": {
-      "oneClick": false,
+      "oneClick": true,
       "perMachine": true,
       "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
+      "allowToChangeInstallationDirectory": false,
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
       "uninstallDisplayName": "Uninstall Kingdom Hall Attendant",
-      "license": "license.txt",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Kingdom Hall Attendant"
@@ -82,8 +82,12 @@
     }
   },
   "keywords": [],
-  "author": "Livrädo Sandoval",
-  "license": "LZL-1.0",
+  "author": {
+    "name": "Livrädo Sandoval",
+    "email": "livrasand@outlook.com",
+    "url": "https://www.getkha.org/"
+  },
+  "license": "GPL-3.0",
   "devDependencies": {
     "electron": "^30.1.0",
     "electron-builder": "^24.13.3"
