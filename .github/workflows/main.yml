@@ -200,7 +200,7 @@ jobs:
               - `kha-${{ env.VERSION }}-mac.zip`
               - `kha-${{ env.VERSION }}.dmg`
             
-            - **Linux:*
+            - **Linux:**
               - `kha-${{ env.VERSION }}.AppImage`
           files: |
             dist/windows/kha Setup ${{ env.VERSION }}.exe
