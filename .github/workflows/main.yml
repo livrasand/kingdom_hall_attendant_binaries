@@ -53,6 +53,7 @@ jobs:
             dist/kha Setup ${{ needs.get-version.outputs.version }}.exe
             dist/kha-${{ needs.get-version.outputs.version }}-win.zip
             dist/kha-${{ needs.get-version.outputs.version }}-ia32-win.zip
+            dist/kha Setup ${{ needs.get-version.outputs.version }}.exe.blockmap
 
   build-mac:
     runs-on: macos-latest
@@ -85,6 +86,10 @@ jobs:
             dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg
             dist/kha-${{ needs.get-version.outputs.version }}-mac.zip
             dist/kha-${{ needs.get-version.outputs.version }}.dmg
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64-mac.zip.blockmap
+            dist/kha-${{ needs.get-version.outputs.version }}-arm64.dmg.blockmap
+            dist/kha-${{ needs.get-version.outputs.version }}-mac.zip.blockmap
+            dist/kha-${{ needs.get-version.outputs.version }}.dmg.blockmap
       
   build-linux:
     runs-on: ubuntu-latest
@@ -116,7 +121,11 @@ jobs:
           name: electron-linux
           path: |
             dist/kha-${{ needs.get-version.outputs.version }}.AppImage
-            dist/kha-electron_${{ needs.get-version.outputs.version }}_amd64.snap  
+            dist/kingdom-hall-attendant-${{ needs.get-version.outputs.version }}.freebsd
+            dist/kingdom-hall-attendant-${{ needs.get-version.outputs.version }}.x86_64.rpm
+            dist/kingdom-hall-attendant-${{ needs.get-version.outputs.version }}.zip
+            dist/kingdom-hall-attendant_${{ needs.get-version.outputs.version }}_amd64.deb
+            dist/kingdom-hall-attendant_${{ needs.get-version.outputs.version }}_amd64.snap
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -178,10 +187,8 @@ jobs:
           name: "v${{ env.VERSION }}"
           body: |
             ![Electron version](https://img.shields.io/badge/Electron-v30.0.1-9feaf9)
-
-            _Kingdom Hall Attendant se encuentra actualmente en desarrollo BETA, respaldado por un sin ánimo de lucro. Estamos apuntando a Primavera del 2025 para una primera versión Estable._
             
-            Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com o cabal: `cabal://53c815d8d410a5fe3ed6cc03f0f318af142202fd868787d83e5efa77d6211554`. Nos complace poder ayudarte.
+            Actualizamos nuestra app periódicamente para que te resulte aún más fácil realizar tus tareas de la congregación. Siempre estamos trabajando en nuevas características, correcciones de errores y mejoras en el rendimiento de Kingdom Hall Attendant. Asegúrate de tener siempre la última versión para disfrutar de la mejor experiencia. Si tienes algún comentario o problema, comunícate con nosotros a través de livrasand@outlook.com. Nos complace poder ayudarte.
             
             Para descargar la versión correspondiente de Kingdom Hall Attendant, selecciona el binario adecuado según tu plataforma:
             
@@ -202,14 +209,35 @@ jobs:
             
             - **Linux:**
               - `kha-${{ env.VERSION }}.AppImage`
+            
+            - **Hashes:**
+              - Windows x64: `$(sha256sum dist/windows/kha Setup ${{ env.VERSION }}.exe | awk '{ print $1 }')`
+              - macOS ARM64: `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}-arm64.dmg | awk '{ print $1 }')`
+              - Linux: `$(sha256sum dist/linux/kha-${{ env.VERSION }}.AppImage | awk '{ print $1 }')`
+              - Windows x86: `$(sha256sum dist/windows/kha-${{ env.VERSION }}-ia32-win.zip | awk '{ print $1 }')`
+              - macOS Intel: `$(shasum -a 256 dist/macos/kha-${{ env.VERSION }}.dmg | awk '{ print $1 }')`
+              - Linux FreeBSD: `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.freebsd | awk '{ print $1 }')`
+              - Linux RPM: `$(sha256sum dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.x86_64.rpm | awk '{ print $1 }')`
+              - Linux DEB: `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.deb | awk '{ print $1 }')`
+              - Linux Snap: `$(sha256sum dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.snap | awk '{ print $1 }')`
           files: |
             dist/windows/kha Setup ${{ env.VERSION }}.exe
+            dist/windows/kha Setup ${{ env.VERSION }}.exe.blockmap
             dist/windows/kha-${{ env.VERSION }}-ia32-win.zip
             dist/windows/kha-${{ env.VERSION }}-win.zip
-            dist/windows/kha-${{ env.VERSION }}-arm64-mac.zip
+            dist/macos/kha-${{ env.VERSION }}-arm64-mac.zip
             dist/macos/kha-${{ env.VERSION }}-arm64.dmg
             dist/macos/kha-${{ env.VERSION }}-mac.zip
             dist/macos/kha-${{ env.VERSION }}.dmg
-            dist/macos/kha-${{ env.VERSION }}.AppImage
+            dist/macos/kha-${{ env.VERSION }}-arm64-mac.zip.blockmap
+            dist/macos/kha-${{ env.VERSION }}-arm64.dmg.blockmap
+            dist/macos/kha-${{ env.VERSION }}-mac.zip.blockmap
+            dist/macos/kha-${{ env.VERSION }}.dmg.blockmap
+            dist/linux/kha-${{ env.VERSION }}.AppImage
+            dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.freebsd
+            dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.x86_64.rpm
+            dist/linux/kingdom-hall-attendant-${{ env.VERSION }}.zip
+            dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.deb
+            dist/linux/kingdom-hall-attendant_${{ env.VERSION }}_amd64.snap
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
