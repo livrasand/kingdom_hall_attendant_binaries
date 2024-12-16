@@ -31,13 +31,27 @@
     "win": {
       "icon": "build/icon.ico",
       "target": [
-        "nsis",
-        "zip"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ]
     },
     "mac": {
       "target": [
         "dmg",
+        "pkg",
+        "mas",
         "zip"
       ],
       "icon": "build/icon.icns",
@@ -49,6 +63,12 @@
       "target": [
         "AppImage",
         "snap",
+        "deb",
+        "rpm", 
+        "freebsd", 
+        "pacman", 
+        "p5p", 
+        "apk",
         "zip"
       ]
     },
